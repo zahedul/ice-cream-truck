@@ -1,6 +1,6 @@
 FROM python:3.8-slim
 
-ARG project_name=zookeep
+ARG USER_NAME=user
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -13,20 +13,20 @@ RUN pip install pipenv
 
 
 COPY Pipfile* /tmp/
-RUN cd /tmp && pipenv install && pipenv requirements > requirements.txt
+RUN cd /tmp && pipenv install --dev && pipenv requirements > requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
 RUN apt-get clean
 RUN rm -f /var/lib/apt/list/*
 
-RUN useradd -ms /bin/bash $project_name
-USER $project_name
+RUN useradd -ms /bin/bash USER_NAME
+USER $USER_NAME
 
-RUN mkdir /home/$project_name/src
-WORKDIR /home/$project_name/src
-COPY ./src /home/$project_name/src
+RUN mkdir /home/$USER_NAME/src
+WORKDIR /home/$USER_NAME/src
+COPY ./src /home/$USER_NAME/src
 
 
-RUN mkdir -p /home/$project_name/src/media
-RUN mkdir -p /home/$project_name/src/static
-RUN mkdir -p /home/$project_name/log
+RUN mkdir -p /home/$USER_NAME/src/media
+RUN mkdir -p /home/$USER_NAME/src/static
+RUN mkdir -p /home/$USER_NAME/log
