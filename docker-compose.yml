@@ -6,10 +6,23 @@ services:
     build:
       context: .
       args:
-        - USER_NAME=zookeep
+        - USER_NAME=appowner
     ports:
       - "8000:8000"
     volumes:
-      - ./src:/home/zookeep/src
+      - ./src:/home/appowner/src
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - app-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=appdb
+      - POSTGRES_USER=appuser
+      - POSTGRES_PASSWORD=secretpassword
+
+
+volumes:
+  app-db-data:
