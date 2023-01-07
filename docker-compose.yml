@@ -21,6 +21,8 @@ services:
       - DB_NAME=appdb
       - DB_USER=appuser
       - DB_PASS=secretpassword
+    depends_on:
+      - db
 
   db:
     image: postgres:13-alpine
